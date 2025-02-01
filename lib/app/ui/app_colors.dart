@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const black = Colors.black;
-  static const red = Color(0xFFA90E0E);
-  static const redShadow = Color(0xFF7F0A0A);
+  static const primary = Color(0xFF161825);
+  static const secondary = Color(0xFF1C1E2E);
+  static const third = Color(0xFF0E81F6);
   static const white = Colors.white;
   static const background = Color(0xFFFFEDDE);
   static const yellow = Color(0xFFFFEE00);
@@ -20,4 +21,3 @@ class GradientColors {
   static const blueFirst = Color(0xFF70B9FF);
   static const blueSecond = Color(0xFF0D84CE);
 }
-
