@@ -2,12 +2,9 @@ class AppIcons {
   static const format = "svg";
   static const mainPath = "assets/svgs";
 
-  static const String strimi = "$mainPath/strimi.$format";
-  static const String question = "$mainPath/question.$format";
-  static const String play = "$mainPath/play.$format";
-  static const String arrows = "$mainPath/arrows.$format";
-  static const String arrow = "$mainPath/arrow.$format";
-  static const String unknown = "$mainPath/unknown.$format";
-  static const String memory = "$mainPath/memory.$format";
-  static const String bar = "$mainPath/bar.$format";
+  static const String about = "$mainPath/about.$format";
+  static const String myEntries = "$mainPath/my_entries.$format";
+  static const String newEntry = "$mainPath/new_entry.$format";
+  static const String settings = "$mainPath/settings.$format";
+  static const String arrowBack = "$mainPath/arrow_back.$format";
 }

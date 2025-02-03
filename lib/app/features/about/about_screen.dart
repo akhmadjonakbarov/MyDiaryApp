@@ -45,32 +45,10 @@ class AboutScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BasicButton(
-                onClick: () => _launchUrl(''),
-                title: "About App",
-              ),
-              BasicButton(
-                onClick: () => _launchUrl('https://www.google.com'),
-                title: "Privacy Policy",
-              ),
-              BasicButton(
-                onClick: () {},
-                title: "Terms of Use",
-              ),
-              BasicButton(
-                onClick: () => sendMail('example@gmail.com'),
-                title: "Contact us",
-              )
-            ],
+            children: [],
           ),
         ),
       ),
     );
   }
 }
-
-// Privacy policy -> open https://www.google.com
-// Terms of use -> open https://www.google.com
-// Contact us -> mail to example@gmail.com
-// About app - Hide button

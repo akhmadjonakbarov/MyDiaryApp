@@ -102,7 +102,7 @@ class ZooItem extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.location_on_outlined,
-                          color: AppColors.red,
+                          color: AppColors.primary,
                         ),
                         SizedBox(
                           width: width / 2,

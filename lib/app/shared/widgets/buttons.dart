@@ -5,41 +5,30 @@ import '../../ui/text_styles.dart';
 import 'responsive_widget.dart';
 
 class BasicButton extends StatelessWidget {
-  final Function() onClick;
-  final String title;
+  final double height;
+  final double width;
+  final Function() onTap;
+  final Widget child;
 
-  const BasicButton({super.key, required this.onClick, required this.title});
+  const BasicButton(
+      {super.key,
+      required this.height,
+      this.width = double.infinity,
+      required this.onTap,
+      required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      builder: (ctx, width, height) => GestureDetector(
-        child: GestureDetector(
-          onTap: onClick,
-          child: Container(
-            margin: EdgeInsets.only(bottom: height / 45),
-            alignment: Alignment.center,
-            height: height / 15,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                height / 85,
-              ),
-              boxShadow: [
-                BoxShadow(color: AppColors.redShadow, offset: Offset(0, 5))
-              ],
-              color: AppColors.red,
-            ),
-            child: Text(
-              title,
-              style: GilroyTextStyle.style(
-                color: AppColors.yellow,
-                size: height / 44,
-                weight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.third,
+          borderRadius: BorderRadius.circular(
+            10,
+          )),
+      height: height,
+      width: width,
+      alignment: Alignment.center,
+      child: child,
     );
   }
 }

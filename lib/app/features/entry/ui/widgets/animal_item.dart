@@ -23,7 +23,7 @@ class AnimalItem extends StatelessWidget {
             height: height / 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(height / 35),
-              border: Border.all(color: AppColors.red, width: 3),
+              border: Border.all(color: AppColors.primary, width: 3),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) => Stack(
