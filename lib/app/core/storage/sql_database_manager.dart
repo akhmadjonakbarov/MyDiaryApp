@@ -1,16 +1,16 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DataStorage {
-  static const String _tableName = 'notes';
+class SQLDatabaseManager {
+  static const String _tableName = 'entries';
 
   // Singleton instance
-  static final DataStorage _instance = DataStorage._internal();
+  static final SQLDatabaseManager _instance = SQLDatabaseManager._internal();
 
-  factory DataStorage() => _instance;
+  factory SQLDatabaseManager() => _instance;
 
   // Private constructor
-  DataStorage._internal();
+  SQLDatabaseManager._internal();
 
   // Database instance
   Database? _database;
