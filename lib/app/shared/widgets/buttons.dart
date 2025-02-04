@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../ui/app_colors.dart';
-import '../../ui/text_styles.dart';
-import 'responsive_widget.dart';
 
 class BasicButton extends StatelessWidget {
   final double height;
@@ -19,16 +17,19 @@ class BasicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: AppColors.third,
-          borderRadius: BorderRadius.circular(
-            10,
-          )),
-      height: height,
-      width: width,
-      alignment: Alignment.center,
-      child: child,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+            color: AppColors.third,
+            borderRadius: BorderRadius.circular(
+              10,
+            )),
+        height: height,
+        width: width,
+        alignment: Alignment.center,
+        child: child,
+      ),
     );
   }
 }
