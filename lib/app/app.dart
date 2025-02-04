@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: Screens.newEntry,
+      initialRoute: Screens.home,
       getPages: [
         GetPage(
           name: Screens.home,
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           binding: HomeBindings(),
         ),
         GetPage(
-          name: Screens.myentries,
+          name: Screens.myEntries,
           page: () => const MyEntriesScreen(),
         ),
         GetPage(
@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: Screens.about,
           page: () => AboutScreen(),
+        ),
+        GetPage(
+          name: Screens.profile,
+          page: () => ProfileScreen(),
         ),
       ],
     );
