@@ -22,14 +22,18 @@ class NewEntryScreen extends StatelessWidget {
             vertical: height / 25,
             horizontal: width / 15,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: ListView(
             children: [
               TopBar(
                 title: "New Entry",
               ),
-              SelectPhoto(
-                onTap: () {},
+              Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: height / 65,
+                ),
+                child: SelectPhoto(
+                  onTap: () {},
+                ),
               ),
               TextField(
                 decoration: InputDecoration(
@@ -46,19 +50,22 @@ class NewEntryScreen extends StatelessWidget {
                   fillColor: AppColors.secondary,
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+              Container(
+                margin: EdgeInsets.symmetric(vertical: height / 65),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Title",
+                    hintStyle: GoogleFonts.montserrat(
+                      color: AppColors.dividerColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: height / 55,
+                    ),
+                    filled: true,
+                    fillColor: AppColors.secondary,
                   ),
-                  hintText: "Title",
-                  hintStyle: GoogleFonts.montserrat(
-                    color: AppColors.dividerColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: height / 55,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.secondary,
                 ),
               ),
               Column(
@@ -74,7 +81,7 @@ class NewEntryScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8),
+                    margin: EdgeInsets.only(top: 8, bottom: 8),
                     alignment: Alignment.center,
                     height: height / 30,
                     child: ListView.separated(
@@ -103,7 +110,7 @@ class NewEntryScreen extends StatelessWidget {
                 ],
               ),
               TextField(
-                maxLines: 13,
+                maxLines: 10,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -117,6 +124,9 @@ class NewEntryScreen extends StatelessWidget {
                   filled: true,
                   fillColor: AppColors.secondary,
                 ),
+              ),
+              SizedBox(
+                height: 15,
               ),
               BasicButton(
                 height: height / 16,

@@ -19,9 +19,9 @@ class SectionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveWidget(
-      builder: (ctx, width, height) => GestureDetector(
+      builder: (ctx, width, height) => InkWell(
         onTap: onClick,
-        child: Padding(
+        child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: width / 25,
             vertical: height / 55,

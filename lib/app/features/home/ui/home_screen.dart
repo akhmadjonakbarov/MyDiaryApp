@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mydiary/app/core/screens.dart';
+import 'package:mydiary/app/features/exports.dart';
 import 'package:mydiary/app/ui/app_icons.dart';
 
 import '../../../shared/widgets/custom_scaffold.dart';
+import '../../../shared/widgets/image_circle.dart';
 import '../../../shared/widgets/responsive_widget.dart';
 import '../../../ui/app_colors.dart';
 import 'widgets/section_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  goToScreen(String page) => Get.toNamed(page);
 
   @override
   Widget build(BuildContext context) {
@@ -25,50 +31,46 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: height * 0.35,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: height * 0.2,
-                        width: width * 0.4,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: height / 100),
-                        child: Text(
-                          "Samantha Bell",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
+                GestureDetector(
+                  onTap: () => Get.toNamed(Screens.profile),
+                  child: Container(
+                    height: height * 0.35,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ImageCircle(),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: height / 100),
+                          child: Text(
+                            "Samantha Bell",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: height / 30,
-                        width: width * 0.3,
-                        decoration: BoxDecoration(
-                            color: AppColors.third,
-                            borderRadius: BorderRadius.circular(10)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Happy",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                        Container(
+                          height: height / 30,
+                          width: width * 0.3,
+                          decoration: BoxDecoration(
+                              color: AppColors.third,
+                              borderRadius: BorderRadius.circular(10)),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Happy",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -88,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       SectionButton(
                         iconPath: AppIcons.newEntry,
-                        onClick: () {},
+                        onClick: () => goToScreen(Screens.newEntry),
                         text: "New Entry",
                       ),
                       Divider(
@@ -97,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SectionButton(
                         iconPath: AppIcons.myEntries,
-                        onClick: () {},
+                        onClick: () => goToScreen(Screens.myEntries),
                         text: "My Entries",
                       ),
                       Divider(
@@ -106,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SectionButton(
                         iconPath: AppIcons.settings,
-                        onClick: () {},
+                        onClick: () => goToScreen(Screens.settings),
                         text: "Settings",
                       ),
                       Divider(
@@ -115,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SectionButton(
                         iconPath: AppIcons.about,
-                        onClick: () {},
+                        onClick: () => goToScreen(Screens.about),
                         text: "AboutUs",
                       ),
                     ],
