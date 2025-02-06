@@ -1,125 +1,84 @@
-class Zoo {
-  final String fsqId;
-  final String closedBucket;
-  final int distance;
-  final Geocodes geocodes;
-  final String link;
-  final Location location;
-  final String name;
-  final String timezone;
-  List<String>? images;
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
-  Zoo(
-      {required this.fsqId,
-      required this.closedBucket,
-      required this.distance,
-      required this.geocodes,
-      required this.link,
-      required this.location,
-      required this.name,
-      required this.timezone,
-      this.images});
-
-  factory Zoo.fromJson(Map<String, dynamic> json) {
-    return Zoo(
-      fsqId: json['fsq_id'] ?? '',
-      closedBucket: json['closed_bucket'] ?? '',
-      distance: json['distance'] ?? 0,
-      geocodes: Geocodes.fromJson(json['geocodes'] ?? {}),
-      link: json['link'] ?? '',
-      location: Location.fromJson(json['location'] ?? {}),
-      name: json['name'] ?? '',
-      timezone: json['timezone'] ?? '',
-    );
-  }
-
-  Zoo copyWith({
-    String? fsqId,
-    String? closedBucket,
-    int? distance,
-    Geocodes? geocodes,
-    String? link,
-    Location? location,
-    String? name,
-    String? timezone,
-    List<String>? images,
-  }) {
-    return Zoo(
-      fsqId: fsqId ?? this.fsqId,
-      closedBucket: closedBucket ?? this.closedBucket,
-      distance: distance ?? this.distance,
-      geocodes: geocodes ?? this.geocodes,
-      link: link ?? this.link,
-      location: location ?? this.location,
-      name: name ?? this.name,
-      timezone: timezone ?? this.timezone,
-      images: images ?? this.images,
-    );
-  }
-}
-
-class Geocodes {
-  final Geocode main;
-  final Geocode? roof;
-
-  Geocodes({required this.main, this.roof});
-
-  factory Geocodes.fromJson(Map<String, dynamic> json) {
-    return Geocodes(
-      main: Geocode.fromJson(json['main'] ?? {}),
-      roof: json['roof'] != null ? Geocode.fromJson(json['roof']) : null,
-    );
-  }
-}
-
-class Geocode {
-  final double latitude;
-  final double longitude;
-
-  Geocode({required this.latitude, required this.longitude});
-
-  factory Geocode.fromJson(Map<String, dynamic> json) {
-    return Geocode(
-      latitude: (json['latitude'] ?? 0.0).toDouble(),
-      longitude: (json['longitude'] ?? 0.0).toDouble(),
-    );
-  }
-}
-
-class Location {
-  final String address;
-  final String censusBlock;
-  final String country;
-  final String crossStreet;
-  final String dma;
-  final String formattedAddress;
-  final String locality;
-  final String postcode;
-  final String region;
-
-  Location({
-    required this.address,
-    required this.censusBlock,
-    required this.country,
-    required this.crossStreet,
-    required this.dma,
-    required this.formattedAddress,
-    required this.locality,
-    required this.postcode,
-    required this.region,
+class Profile {
+  final String fullName;
+  final String status;
+  final String about;
+  final String? imagePath;
+  Profile({
+    required this.fullName,
+    required this.status,
+    required this.about,
+    this.imagePath,
   });
 
-  factory Location.fromJson(Map<String, dynamic> json) {
-    return Location(
-      address: json['address'] ?? '',
-      censusBlock: json['census_block'] ?? '',
-      country: json['country'] ?? '',
-      crossStreet: json['cross_street'] ?? '',
-      dma: json['dma'] ?? '',
-      formattedAddress: json['formatted_address'] ?? '',
-      locality: json['locality'] ?? '',
-      postcode: json['postcode'] ?? '',
-      region: json['region'] ?? '',
+  factory Profile.empty() {
+    return Profile(
+      fullName: '',
+      status: '',
+      about: '',
+      imagePath: '',
     );
+  }
+
+  Profile copyWith({
+    String? fullName,
+    String? status,
+    String? about,
+    String? imagePath,
+  }) {
+    return Profile(
+      fullName: fullName ?? this.fullName,
+      status: status ?? this.status,
+      about: about ?? this.about,
+      imagePath: imagePath ?? this.imagePath,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'fullName': fullName,
+      'status': status,
+      'about': about,
+      'imagePath': imagePath,
+    };
+  }
+
+  factory Profile.fromMap(Map<String, dynamic> map) {
+    return Profile(
+      fullName: map['fullName'] as String,
+      status: map['status'] as String,
+      about: map['about'] as String,
+      imagePath: map['imagePath'] != null ? map['imagePath'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Profile.fromJson(String source) =>
+      Profile.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Profile(fullName: $fullName, status: $status, about: $about, imagePath: $imagePath)';
+  }
+
+  @override
+  bool operator ==(covariant Profile other) {
+    if (identical(this, other)) return true;
+
+    return other.fullName == fullName &&
+        other.status == status &&
+        other.about == about &&
+        other.imagePath == imagePath;
+  }
+
+  @override
+  int get hashCode {
+    return fullName.hashCode ^
+        status.hashCode ^
+        about.hashCode ^
+        imagePath.hashCode;
   }
 }
