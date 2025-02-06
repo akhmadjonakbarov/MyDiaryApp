@@ -1,3 +1,4 @@
+import '../../features/entry/models/entry.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -42,7 +43,7 @@ class SQLDatabaseManager {
         await db.execute('''
          CREATE TABLE images (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            note_id INTEGER,
+            entry_id INTEGER,
             image TEXT,
             created TEXT,
              FOREIGN KEY (note_id) REFERENCES $_tableName(id) ON DELETE CASCADE
@@ -50,5 +51,31 @@ class SQLDatabaseManager {
         ''');
       },
     );
+  }
+
+  Future insertEntry(Entry entry) async {
+    final db = await database;
+    int entryId = await db.insert(
+      _tableName,
+      entry.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace, // Handle duplicate entries
+    );
+    insertImage(entryId, entry.imagePaths);
+  }
+
+  Future<void> insertImage(int entryId, List<String> imagePaths) async {
+    final db = await database;
+
+    for (String element in imagePaths) {
+      await db.insert(
+        'images',
+        {
+          'entry_id': entryId,
+          'image': element,
+          'created': DateTime.now().toIso8601String(),
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
   }
 }

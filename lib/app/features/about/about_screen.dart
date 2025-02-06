@@ -6,7 +6,7 @@ import '../../shared/widgets/responsive_widget.dart';
 import '../../ui/app_colors.dart';
 
 class AboutScreen extends StatelessWidget {
-  AboutScreen({super.key});
+  const AboutScreen({super.key});
 
   Future<void> _launchUrl(String url) async {
     Uri uri = Uri.parse(url);

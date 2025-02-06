@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mydiary/app/ui/app_icons.dart';
+import '../../ui/app_icons.dart';
 
-import '../../ui/app_colors.dart';
-import '../../ui/text_styles.dart';
 import 'responsive_widget.dart';
 
 class TopBar extends StatelessWidget {
@@ -20,28 +18,30 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(builder: (ctx, width, height) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: SvgPicture.asset(
-              AppIcons.arrowBack,
-              color: Colors.white,
+    return ResponsiveWidget(
+      builder: (ctx, width, height) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: SvgPicture.asset(
+                AppIcons.arrowBack,
+                color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            title,
-            style: GoogleFonts.montserrat(
-              fontSize: height / 45,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+            Text(
+              title,
+              style: GoogleFonts.montserrat(
+                fontSize: height / 45,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          SizedBox.shrink()
-        ],
-      );
-    });
+            SizedBox.shrink()
+          ],
+        );
+      },
+    );
   }
 }

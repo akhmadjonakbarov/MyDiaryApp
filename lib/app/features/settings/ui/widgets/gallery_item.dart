@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -62,7 +61,9 @@ class GalleryItem extends StatelessWidget {
                         child: Text(
                           date,
                           style: GilroyTextStyle.style(
-                              color: AppColors.umber, size: height / 75),
+                            color: AppColors.umber,
+                            size: height / 75,
+                          ),
                         ),
                       )
                     ],

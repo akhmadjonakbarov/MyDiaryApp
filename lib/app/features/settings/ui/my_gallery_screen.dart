@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:mydiary/app/ui/app_colors.dart';
-import 'package:mydiary/app/ui/app_icons.dart';
+import '../../../ui/app_colors.dart';
+import '../../../ui/app_icons.dart';
 
-import '../../../core/screens.dart';
 import '../../../shared/widgets/buttons.dart';
 import '../../../shared/widgets/custom_scaffold.dart';
 import '../../../shared/widgets/headers.dart';
 import '../../../shared/widgets/responsive_widget.dart';
-
-import 'widgets/gallery_item.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -39,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                   Get.dialog(
                     AlertDialog(
                       backgroundColor: AppColors.secondary,
-                      content: Container(
+                      content: SizedBox(
                         height: height * 0.14,
                         width: width,
                         child: Column(
@@ -121,7 +117,7 @@ class SettingsScreen extends StatelessWidget {
                   Get.dialog(
                     AlertDialog(
                       backgroundColor: AppColors.secondary,
-                      content: Container(
+                      content: SizedBox(
                         height: height * 0.14,
                         width: width,
                         child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../ui/app_colors.dart';
+import 'responsive_widget.dart';
 
 class BasicButton extends StatelessWidget {
   final double height;
@@ -34,13 +35,39 @@ class BasicButton extends StatelessWidget {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({super.key});
+class StatusButton extends StatelessWidget {
+  const StatusButton(
+      {super.key,
+      this.onTap,
+      this.status,
+      this.containerHeight,
+      this.containerWidth});
+  final Function(String status)? onTap;
+  final String? status;
+
+  final double? containerHeight;
+  final double? containerWidth;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Icon(Icons.arrow_back_ios),
+    return ResponsiveWidget(
+      builder: (ctx, width, height) => GestureDetector(
+        onTap: () => onTap!(status!),
+        child: Container(
+          height: containerHeight ?? height / 30,
+          width: containerWidth ?? width * 0.3,
+          decoration: BoxDecoration(
+              color: AppColors.third, borderRadius: BorderRadius.circular(10)),
+          alignment: Alignment.center,
+          child: Text(
+            status!,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

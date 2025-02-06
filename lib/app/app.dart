@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mydiary/app/features/exports.dart';
+import 'features/exports.dart';
 
 import 'core/screens.dart';
 import 'features/home/logic/home_bindings.dart';
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: Screens.home,
-          page: () => const HomeScreen(),
+          page: () => HomeScreen(),
           binding: HomeBindings(),
         ),
         GetPage(
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: Screens.newEntry,
-          page: () => const NewEntryScreen(),
+          page: () => NewEntryScreen(),
         ),
         GetPage(
           name: Screens.settings,

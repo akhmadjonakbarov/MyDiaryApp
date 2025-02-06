@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../shared/widgets/responsive_widget.dart';
 import '../../../../ui/app_colors.dart';
-
 import '../../models/entry.dart';
 
 class EntryItem extends StatelessWidget {
@@ -30,7 +29,7 @@ class EntryItem extends StatelessWidget {
           child: Row(
             children: [
               EntryDateWithTag(),
-              EntryInfo(),
+              EntryHead(),
             ],
           ),
         ),
@@ -39,8 +38,8 @@ class EntryItem extends StatelessWidget {
   }
 }
 
-class EntryInfo extends StatelessWidget {
-  const EntryInfo({
+class EntryHead extends StatelessWidget {
+  const EntryHead({
     super.key,
   });
 
@@ -88,8 +87,9 @@ class EntryInfo extends StatelessWidget {
                   height: 35,
                   width: width / 6,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.green),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.green,
+                  ),
                 ),
                 itemCount: 3,
               ),
