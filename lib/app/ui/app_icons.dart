@@ -9,4 +9,7 @@ class AppIcons {
   static const String tag = "$mainPath/tag.$format";
   static const String trash = "$mainPath/trash.$format";
   static const String edit = "$mainPath/edit.$format";
+  static const String contactUs = "$mainPath/contactUs.$format";
+  static const String privacyPolicy = "$mainPath/prv.$format";
+  static const String termsOfService = "$mainPath/prv.$format";
 }

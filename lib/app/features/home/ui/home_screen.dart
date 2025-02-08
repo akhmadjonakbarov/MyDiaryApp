@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mydiary/app/shared/logics/tag_controller.dart';
+import 'package:mydiary/app/shared/models/tag.dart';
 import '../../../core/data/constants_data.dart';
 import '../../../core/screens.dart';
 import '../../../core/storage/shared_prefs_helper.dart';
@@ -17,7 +19,7 @@ import '../../profile/ui/widgets/edit_button.dart';
 import 'widgets/section_button.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,12 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
   goToScreen(String page) => Get.toNamed(page);
 
   final ProfileController profileController = Get.find<ProfileController>();
+  final TagController tagController = Get.find<TagController>();
+
   bool isNameEditable = false;
   bool isStatusEditable = false;
 
   String? imageUrl;
   String? fullName;
-  String? status;
+  String? status = "Happy ☺️";
 
   void selectImageForProfile() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -84,22 +88,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                           onTap: () => selectImageForProfile(),
                                         ),
                                       ),
-                                      Positioned(
-                                        bottom: height * 0.1 / -20,
-                                        left: width * 0.388,
-                                        child: Container(
-                                          height: 45,
-                                          width: 45,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.secondary,
-                                            shape: BoxShape.circle,
+                                      if (imageUrl == null)
+                                        Positioned(
+                                          bottom: 2,
+                                          left: width * 0.32,
+                                          child: Container(
+                                            height: 45,
+                                            width: 45,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.secondary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              Icons.camera_enhance,
+                                              color: AppColors.third,
+                                            ),
                                           ),
-                                          child: Icon(
-                                            Icons.camera_enhance,
-                                            color: AppColors.third,
-                                          ),
-                                        ),
-                                      )
+                                        )
                                     ],
                                   ),
                                   Column(
@@ -110,15 +115,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           if (isNameEditable)
                                             SizedBox(
-                                              width: width * 0.45,
+                                              width: width * 0.5,
                                               child: TextField(
                                                 controller: fullNameController,
                                                 style: GoogleFonts.montserrat(
                                                   color: AppColors.white,
                                                 ),
                                                 decoration: InputDecoration(
-                                                    hintText:
-                                                        "Please enter a name"),
+                                                  hintText:
+                                                      "Please enter a name",
+                                                ),
                                               ),
                                             )
                                           else
@@ -148,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .text;
                                                       isNameEditable = false;
                                                     });
+                                                    Get.back();
                                                   } else {
                                                     Get.snackbar(
                                                       "Warning!",
@@ -174,65 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         height: height / 85,
                                       ),
-                                      if (isStatusEditable)
-                                        SizedBox(
-                                            width: width,
-                                            height: height / 30,
-                                            child: DropdownButton<String>(
-                                              value: status,
-                                              icon: const Icon(
-                                                  Icons.arrow_downward),
-                                              elevation: 16,
-                                              style: const TextStyle(
-                                                  color: Colors.deepPurple),
-                                              underline: Container(
-                                                height: 2,
-                                                color: Colors.deepPurpleAccent,
-                                              ),
-                                              onChanged: (String? value) {
-                                                // This is called when the user selects an item.
-                                                setState(() {
-                                                  status = value!;
-                                                });
-                                              },
-                                              items: statuses.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                            ))
-                                      else
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              height: height / 30,
-                                              width: width * 0.3,
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.third,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                status.toString(),
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-                                            EditButton(
-                                              onTap: () => setState(() {
-                                                isStatusEditable = true;
-                                              }),
-                                            )
-                                          ],
-                                        )
                                     ],
                                   )
                                 ],
@@ -294,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: height / 25,
                 ),
                 Container(
-                  height: height * 0.32,
+                  height: height * 0.38,
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: height / 95),
                   decoration: BoxDecoration(

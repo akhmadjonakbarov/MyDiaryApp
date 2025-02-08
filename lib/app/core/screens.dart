@@ -5,4 +5,6 @@ class Screens {
   static const String settings = '/settings';
   static const String profile = '/profile';
   static const String about = '/about';
+
+  static const String entryDetail = '/entryDetail';
 }

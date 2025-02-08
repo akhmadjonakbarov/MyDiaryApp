@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mydiary/app/features/entry/ui/entry_detail_screen.dart';
 import 'features/exports.dart';
 
 import 'core/screens.dart';
@@ -26,11 +27,15 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: Screens.myEntries,
-          page: () => const MyEntriesScreen(),
+          page: () => MyEntriesScreen(),
         ),
         GetPage(
           name: Screens.newEntry,
           page: () => NewEntryScreen(),
+        ),
+        GetPage(
+          name: Screens.entryDetail,
+          page: () => EntryDetailScreen(),
         ),
         GetPage(
           name: Screens.settings,

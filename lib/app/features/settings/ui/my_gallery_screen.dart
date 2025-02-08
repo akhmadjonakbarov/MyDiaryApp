@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mydiary/app/features/entry/logic/entry_controller.dart';
+import 'package:mydiary/app/shared/logics/tag_controller.dart';
+import 'package:mydiary/app/shared/models/tag.dart';
 import '../../../ui/app_colors.dart';
 import '../../../ui/app_icons.dart';
 
@@ -11,7 +14,11 @@ import '../../../shared/widgets/headers.dart';
 import '../../../shared/widgets/responsive_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  SettingsScreen({super.key});
+
+  final TagController tagController = Get.find<TagController>();
+  final EntryController entryController = Get.find<EntryController>();
+  final TextEditingController tagEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +27,8 @@ class SettingsScreen extends StatelessWidget {
       body: ResponsiveWidget(
         builder: (ctx, width, height) => Padding(
           padding: EdgeInsets.symmetric(
-            vertical: height / 30,
-            horizontal: width / 25,
+            vertical: height / 20,
+            horizontal: width / 15,
           ),
           child: Column(
             children: [
@@ -43,6 +50,7 @@ class SettingsScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextField(
+                              controller: tagEditingController,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -50,6 +58,11 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                 ),
                                 hintText: "Tag name",
+                              ),
+                              style: GoogleFonts.montserrat(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: height / 55,
                               ),
                             ),
                             Row(
@@ -71,7 +84,27 @@ class SettingsScreen extends StatelessWidget {
                                 BasicButton(
                                   height: height / 25,
                                   width: width * 0.25,
-                                  onTap: () {},
+                                  onTap: () {
+                                    if (tagEditingController.text.isNotEmpty) {
+                                      tagController.saveTag(Tag(
+                                          value: tagEditingController.text));
+                                      tagEditingController.clear();
+                                      Get.snackbar(
+                                        "Success",
+                                        "Tag was added successfully",
+                                        backgroundColor: Colors.green,
+                                        colorText: Colors.white,
+                                      );
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      Get.snackbar(
+                                        "Warning!",
+                                        "Please enter a tag",
+                                        backgroundColor: Colors.orange,
+                                        colorText: Colors.white,
+                                      );
+                                    }
+                                  },
                                   child: Text(
                                     "Save",
                                     style: GoogleFonts.montserrat(
@@ -141,7 +174,16 @@ class SettingsScreen extends StatelessWidget {
                                 BasicButton(
                                   height: height / 25,
                                   width: width * 0.25,
-                                  onTap: () => Navigator.of(ctx).pop(),
+                                  onTap: () {
+                                    entryController.deleteEntries();
+                                    Navigator.of(ctx).pop();
+                                    Get.snackbar(
+                                      "Success",
+                                      "All entries were deleted successfully",
+                                      backgroundColor: Colors.green,
+                                      colorText: Colors.white,
+                                    );
+                                  },
                                   child: Text(
                                     "Yes",
                                     style: GoogleFonts.montserrat(
@@ -154,7 +196,7 @@ class SettingsScreen extends StatelessWidget {
                                 BasicButton(
                                   height: height / 25,
                                   width: width * 0.25,
-                                  onTap: () {},
+                                  onTap: () => Navigator.of(ctx).pop(),
                                   child: Text(
                                     "No",
                                     style: GoogleFonts.montserrat(

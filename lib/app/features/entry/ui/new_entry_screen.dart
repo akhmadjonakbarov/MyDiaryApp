@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mydiary/app/core/data/constants_data.dart';
+import 'package:mydiary/app/shared/logics/tag_controller.dart';
+import 'package:mydiary/app/utils/image_selector.dart';
 import '../logic/entry_controller.dart';
 import '../models/entry.dart';
 
@@ -12,15 +17,25 @@ import '../../../shared/widgets/responsive_widget.dart';
 import '../../../ui/app_colors.dart';
 import 'widgets/select_photo.dart';
 
-class NewEntryScreen extends StatelessWidget {
+class NewEntryScreen extends StatefulWidget {
   NewEntryScreen({super.key});
 
+  @override
+  State<NewEntryScreen> createState() => _NewEntryScreenState();
+}
+
+class _NewEntryScreenState extends State<NewEntryScreen> {
   final EntryController entryController = Get.find<EntryController>();
+  final TagController tagController = Get.find<TagController>();
 
   final List<String> images = [];
+
   String tag = '';
+
   TextEditingController titleController = TextEditingController();
+
   TextEditingController descriptionController = TextEditingController();
+
   DateTime? createdDate;
 
   @override
@@ -31,7 +46,7 @@ class NewEntryScreen extends StatelessWidget {
       body: ResponsiveWidget(
         builder: (ctx, width, height) => Padding(
           padding: EdgeInsets.symmetric(
-            vertical: height / 25,
+            vertical: height / 20,
             horizontal: width / 15,
           ),
           child: ListView(
@@ -44,7 +59,15 @@ class NewEntryScreen extends StatelessWidget {
                   vertical: height / 65,
                 ),
                 child: SelectPhoto(
-                  onTap: () {},
+                  onTap: () async {
+                    String? imagePath = await ImageSelector.select();
+                    if (imagePath != null) {
+                      setState(() {
+                        images.add(imagePath);
+                      });
+                    }
+                  },
+                  images: images,
                 ),
               ),
               TextField(
@@ -61,6 +84,11 @@ class NewEntryScreen extends StatelessWidget {
                   ),
                   filled: true,
                   fillColor: AppColors.secondary,
+                ),
+                style: GoogleFonts.montserrat(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: height / 55,
                 ),
               ),
               GestureDetector(
@@ -79,13 +107,15 @@ class NewEntryScreen extends StatelessWidget {
                       ).then((selectedTime) {
                         // Handle the selected date and time here.
                         if (selectedTime != null) {
-                          createdDate = DateTime(
-                            selectedDate.year,
-                            selectedDate.month,
-                            selectedDate.day,
-                            selectedTime.hour,
-                            selectedTime.minute,
-                          );
+                          setState(() {
+                            createdDate = DateTime(
+                              selectedDate.year,
+                              selectedDate.month,
+                              selectedDate.day,
+                              selectedTime.hour,
+                              selectedTime.minute,
+                            );
+                          });
                         }
                       });
                     }
@@ -101,9 +131,11 @@ class NewEntryScreen extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      "Date",
+                      createdDate != null
+                          ? DateFormat("dd-MMM-yyyy").format(createdDate!)
+                          : "Please select a date",
                       style: GoogleFonts.montserrat(
-                        color: AppColors.dividerColor,
+                        color: AppColors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: height / 55,
                       ),
@@ -127,32 +159,40 @@ class NewEntryScreen extends StatelessWidget {
                     margin: EdgeInsets.only(top: 8, bottom: 8),
                     alignment: Alignment.center,
                     height: height / 30,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () {
-                          tag = entriesTags[index];
-                        },
-                        child: Container(
-                          height: height / 30,
-                          width: width * 0.3,
-                          decoration: BoxDecoration(
-                              color: AppColors.third,
-                              borderRadius: BorderRadius.circular(10)),
-                          alignment: Alignment.center,
-                          child: Text(
-                            entriesTags[index],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                    child: Obx(
+                      () {
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                tag = tagController.tags[index].value;
+                              });
+                            },
+                            child: Container(
+                              height: height / 30,
+                              width: width * 0.3,
+                              decoration: BoxDecoration(
+                                  color: tagController.tags[index].value == tag
+                                      ? Colors.green
+                                      : AppColors.third,
+                                  borderRadius: BorderRadius.circular(10)),
+                              alignment: Alignment.center,
+                              child: Text(
+                                entriesTag[index],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: 5,
-                      ),
-                      itemCount: 25,
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 5,
+                          ),
+                          itemCount: tagController.tags.length,
+                        );
+                      },
                     ),
                   )
                 ],
@@ -173,6 +213,11 @@ class NewEntryScreen extends StatelessWidget {
                   filled: true,
                   fillColor: AppColors.secondary,
                 ),
+                style: GoogleFonts.montserrat(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: height / 55,
+                ),
               ),
               SizedBox(
                 height: 15,
@@ -180,22 +225,45 @@ class NewEntryScreen extends StatelessWidget {
               BasicButton(
                 height: height / 16,
                 onTap: () {
+                  log("Images before saving: $images"); // Debugging log
+
                   if (titleController.text.isNotEmpty &&
                       descriptionController.text.isNotEmpty &&
-                      images.isNotEmpty &&
+                      images.isNotEmpty && // Ensure images are selected
                       tag.isNotEmpty) {
                     Entry entry = Entry(
                       title: titleController.text.trim(),
                       tag: tag,
-                      createdDate: createdDate.toString(),
+                      createdDate:
+                          createdDate?.toString() ?? DateTime.now().toString(),
                       description: descriptionController.text.trim(),
-                      imagePaths: images,
+                      imagePaths:
+                          List<String>.from(images), // Ensure it's a new list
                     );
+
+                    log("Saving Entry: ${entry.toMap()}"); // Debug log
                     entryController.saveEntry(entry);
+
+                    // Clear UI state
+                    titleController.clear();
+                    descriptionController.clear();
+                    setState(() {
+                      images.clear();
+                      tag = "";
+                      createdDate = null;
+                    });
+                    Get.snackbar(
+                      "Success",
+                      "Entry was saved successfully",
+                      backgroundColor: Colors.orange,
+                      colorText: Colors.white,
+                    );
                   } else {
                     Get.snackbar(
                       "Warning!",
-                      "Please enter title and description",
+                      "Please enter title, description, and select at least one image",
+                      backgroundColor: Colors.orange,
+                      colorText: Colors.white,
                     );
                   }
                 },

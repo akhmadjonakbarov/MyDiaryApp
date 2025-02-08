@@ -45,6 +45,9 @@ dependencies:
   widgets_easier: ^0.0.10
   shared_preferences: ^2.5.1
   image_picker: ^1.1.2
+  carousel_slider: ^5.0.0
+  share_plus: ^10.1.4
+
 
 dev_dependencies:
   flutter_test:

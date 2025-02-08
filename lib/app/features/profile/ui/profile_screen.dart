@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mydiary/app/shared/logics/tag_controller.dart';
 import '../../../core/storage/shared_prefs_helper.dart';
 import '../logic/profile_controller.dart';
 import '../../../shared/widgets/buttons.dart';
@@ -25,10 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isStatusEditable = false;
 
   final ProfileController profileController = Get.find<ProfileController>();
+  final TagController tagController = Get.find<TagController>();
 
   String? imageUrl;
   String? fullName;
   String? status;
+  String? about;
 
   void selectImageForProfile() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -44,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController aboutController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             () {
               fullName = profileController.profile.value.fullName;
               status = profileController.profile.value.status;
+              about = profileController.profile.value.about;
+              aboutController.text = about ?? "";
               imageUrl = profileController.profile.value.imagePath;
+
               if (fullName!.isEmpty) {
                 isNameEditable = true;
               }
@@ -84,22 +91,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onTap: () => selectImageForProfile(),
                               ),
                             ),
-                            Positioned(
-                              bottom: height * 0.1 / -20,
-                              left: width * 0.388,
-                              child: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  color: AppColors.secondary,
-                                  shape: BoxShape.circle,
+                            if (imageUrl == null)
+                              Positioned(
+                                bottom: height * 0.1 / -20,
+                                left: width * 0.388,
+                                child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.secondary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_enhance,
+                                    color: AppColors.third,
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.camera_enhance,
-                                  color: AppColors.third,
-                                ),
-                              ),
-                            )
+                              )
                           ],
                         ),
                         Column(
@@ -167,30 +175,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: height / 85,
                             ),
                             if (isStatusEditable)
-                              SizedBox(
-                                width: width,
-                                height: height / 30,
-                                child: ListView.separated(
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                    width: 5,
-                                  ),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: statuses.length,
-                                  itemBuilder: (context, index) => StatusButton(
-                                    status: statuses[index],
-                                    onTap: (sts) {
-                                      profileController.setProfile(
-                                        SharedPreferencesKeys.status.name,
-                                        sts,
-                                      );
-                                      setState(() {
-                                        status = sts;
-                                        isStatusEditable = false;
-                                      });
-                                    },
-                                  ),
-                                ),
+                              Obx(
+                                () {
+                                  return SizedBox(
+                                    width: width,
+                                    height: height / 30,
+                                    child: ListView.separated(
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(
+                                        width: 5,
+                                      ),
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: tagController.tags.length,
+                                      itemBuilder: (context, index) =>
+                                          StatusButton(
+                                        status: tagController.tags[index].value,
+                                        onTap: (sts) {
+                                          profileController.setProfile(
+                                            SharedPreferencesKeys.status.name,
+                                            sts,
+                                          );
+                                          setState(() {
+                                            status = sts;
+                                            isStatusEditable = false;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
                               )
                             else
                               Row(
@@ -238,6 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     TextField(
+                      controller: aboutController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: AppColors.secondary,
@@ -246,7 +260,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderSide: BorderSide.none,
                         ),
                       ),
+                      style: GoogleFonts.montserrat(
+                        color: AppColors.white,
+                        fontSize: height / 50,
+                      ),
+                      onSubmitted: (value) async {
+                        profileController.setProfile(
+                          SharedPreferencesKeys.about.name,
+                          value,
+                        );
+                        setState(() {
+                          about = value;
+                        });
+                      },
                       maxLines: 8,
+                      keyboardType: TextInputType.text,
+                      // Ensures normal text input
+                      textInputAction: TextInputAction
+                          .done, // Makes Enter trigger submission
                     )
                   ],
                 ),
